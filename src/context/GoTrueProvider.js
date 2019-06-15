@@ -15,13 +15,17 @@ const GoTrueProvider = ({ children }) => {
       const token = decodeURIComponent(window.location.search)
         .substring(1)
         .split("confirmation_token=")[1]
+      console.log({ token })
       if (!token) {
         resolve()
         return
       }
       auth
         .confirm(token)
-        .then(res => resolve(res))
+        .then(res => {
+          resolve(res)
+          console.log({ confirm: res })
+        })
         .catch(err => {
           reject(err)
           console.log(err)
@@ -35,7 +39,10 @@ const GoTrueProvider = ({ children }) => {
         .then(() => {
           auth
             .login(email, password)
-            .then(res => resolve(res))
+            .then(res => {
+              resolve(res)
+              console.log({ login: res })
+            })
             .catch(err => {
               reject(err)
               console.log(err)

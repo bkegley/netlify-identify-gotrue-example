@@ -12,7 +12,7 @@ export const GoTrueContext = React.createContext()
 const GoTrueProvider = ({ children }) => {
   const confirm = () => {
     return new Promise((resolve, reject) => {
-      const token = decodeURIComponent(window.location.search)
+      const token = window.location.hash
         .substring(1)
         .split("confirmation_token=")[1]
       console.log({ token })

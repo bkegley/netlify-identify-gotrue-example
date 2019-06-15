@@ -4,12 +4,12 @@ import { Link } from "gatsby"
 import Layout from "../components/Layout"
 import Image from "../components/Image"
 import SEO from "../components/SEO"
+import useAuth from "../context/useAuth"
 
 const IndexPage = () => {
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
-
-  console.log({ email, password })
+  const { auth, login } = useAuth()
 
   return (
     <Layout>
@@ -19,22 +19,38 @@ const IndexPage = () => {
         This is a small example of using Netlify Identity and the GoTrue APi
       </p>
       <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
+        <h2>Login</h2>
         <form
-          onSubmit={e => {
+          onSubmit={async e => {
             e.preventDefault()
-            console.log({ e })
+            const newUser = await login(email, password).catch(err =>
+              console.log({ err })
+            )
+            console.log({ newUser })
           }}
         >
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.currentTarget.value)}
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.currentTarget.value)}
-          />
+          <div style={{ display: "flex" }}>
+            <label htmlFor="email" style={{ flex: 1 }}>
+              Email
+            </label>
+            <input
+              style={{ flex: 1 }}
+              type="text"
+              value={email}
+              onChange={e => setEmail(e.currentTarget.value)}
+            />
+          </div>
+          <div style={{ display: "flex" }}>
+            <label htmlFor="password" style={{ flex: 1 }}>
+              Password
+            </label>
+            <input
+              style={{ flex: 1 }}
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.currentTarget.value)}
+            />
+          </div>
           <button type="submit">Submit</button>
         </form>
       </div>
